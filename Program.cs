@@ -5,6 +5,10 @@ namespace toru
 {
     internal class Program
     {
+        static void Main(string[] args)
+        {
+            ParcelLineFitController(BoxSizes);
+        }
         public static bool ParcelLineFitController(List<BoxSize>boxSizes)
         {   //väikse algustähega, kuna on lokaalne muutuja
             bool parcelFits= false;
@@ -26,22 +30,39 @@ namespace toru
                        + (lineWidth * lineWidth);
                     var cornerDiagonal = Math.Sqrt(sortingLineNotSqrt);
 
-                    if (sortingLine.LineWidth >= halfParcelDiagonal)
+                       if (sortingLine.LineWidth >= halfParcelDiagonal)
                     {
                         Console.WriteLine("Sorting line width is {0} and it fits", sortingLine.LineWidth);
                     }
-                    else if (box.Width >= halfParcelDiagonal)
+                    else if(sortingLine.LineWidth <= halfParcelDiagonal && lineWidth >= halfParcelDiagonal)
                     {
                         Console.WriteLine("Sorting line width is {0} and it fits", sortingLine.LineWidth);
                     }
-                    else if (sortingLine.LineWidth <= halfParcelDiagonal && lineWidth >= halfParcelDiagonal)
+                    else if (sortingLine.LineWidth >= box.Length || sortingLine.LineWidth >= box.Width)
                     {
                         Console.WriteLine("Sorting line width is {0} and it fits", sortingLine.LineWidth);
                     }
-                    else if (box.Width <= halfParcelDiagonal && lineWidth >= halfParcelDiagonal)
+                    else if(box.Width<= halfParcelDiagonal)
                     {
                         Console.WriteLine("Sorting line width is {0} and it fits", sortingLine.LineWidth);
                     }
+                    else if(sortingLine.LineWidth <= halfParcelDiagonal && sortingLine.LineWidth>= cornerDiagonal)
+                    {
+                        parcelFits = sortingLine.LineWidth <= halfParcelDiagonal && sortingLine.LineWidth >= cornerDiagonal;
+
+                        var result = parcelFits
+                            //? ja : lühidalt else if
+                        ? "Sorting line width is" + sortingLine.LineWidth + "and it fits" :
+                        "It dosent fit to the sorting line and needs to be wider";
+                        Console.WriteLine(result);
+                    }
+                    else
+                    {
+                        Console.WriteLine("It dosent fit to sorting line and need to be wider");
+                    }
+
+
+                
                 }
             }
 
